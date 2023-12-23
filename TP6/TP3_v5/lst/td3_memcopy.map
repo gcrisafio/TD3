@@ -1,0 +1,126 @@
+
+Configuración de la Memoria
+
+Nombre           Origen             Longitud           Atributos
+public_ram       0x0000000070030000 0x0000000000001000
+public_stack     0x0000000070020000 0x0000000000001000
+*default*        0x0000000000000000 0xffffffffffffffff
+
+Guión del enlazador y mapa de memoria
+
+                0x0000000070010000                _PUBLIC_ROM_INIT = 0x70010000
+                0x0000000070020000                _PUBLIC_STACK_INIT = 0x70020000
+                0x0000000070030000                _PUBLIC_RAM_INIT = 0x70030000
+                0x0000000070010000                _PUBLIC_SECTION_INICIO = _PUBLIC_ROM_INIT
+                0x0000000070030000                _PUBLIC_SECTION_TEXT = 0x70030000
+                0x0000000070100000                _PUBLIC_SECTION_DATA = 0x70100000
+                0x00000000000000a8                _PUBLIC_SIZE_INICIO = SIZEOF (.inicio)
+                0x000000000000003c                _PUBLIC_SIZE_TEXT = SIZEOF (.text)
+                0x0000000000000008                _PUBLIC_SIZE_DATA = SIZEOF (.data)
+                0x0000000070010000                _PUBLIC_LMA_SECTION_INICIO = _PUBLIC_SECTION_INICIO
+                0x0000000070010000                _PUBLIC_VMA_SECTION_INICIO = _PUBLIC_SECTION_INICIO
+                0x00000000700100a8                _PUBLIC_LMA_SECTION_TEXT = (_PUBLIC_LMA_SECTION_INICIO + SIZEOF (.inicio))
+                0x0000000070030000                _PUBLIC_VMA_SECTION_TEXT = _PUBLIC_SECTION_TEXT
+                0x00000000700100e4                _PUBLIC_LMA_SECTION_DATA = ((_PUBLIC_ROM_INIT + SIZEOF (.inicio)) + SIZEOF (.text))
+                0x000000007003003c                _PUBLIC_VMA_SECTION_DATA = (_PUBLIC_RAM_INIT + SIZEOF (.text))
+
+.inicio         0x0000000070010000       0xa8
+ *(.inicio*)
+ .inicio        0x0000000070010000       0x3c obj/td3_memcopy_s.o
+ .inicio        0x000000007001003c       0x6c obj/td3_c.o
+                0x000000007001003c                td3_memcopy
+
+.text           0x0000000070030000       0x3c dirección de carga 0x00000000700100a8
+ *(.text*)
+ .text          0x0000000070030000       0x3c obj/td3_memcopy_s.o
+                0x0000000070030000                _start
+ .text          0x000000007003003c        0x0 obj/td3_c.o
+                0x00000000700100a8                _SECTION_TEXT_LMA = LOADADDR (.text)
+
+.glue_7         0x000000007003003c        0x0 dirección de carga 0x00000000700100e4
+ .glue_7        0x000000007003003c        0x0 linker stubs
+
+.glue_7t        0x000000007003003c        0x0 dirección de carga 0x00000000700100e4
+ .glue_7t       0x000000007003003c        0x0 linker stubs
+
+.vfp11_veneer   0x000000007003003c        0x0 dirección de carga 0x00000000700100e4
+ .vfp11_veneer  0x000000007003003c        0x0 linker stubs
+
+.v4_bx          0x000000007003003c        0x0 dirección de carga 0x00000000700100e4
+ .v4_bx         0x000000007003003c        0x0 linker stubs
+
+.iplt           0x000000007003003c        0x0 dirección de carga 0x00000000700100e4
+ .iplt          0x000000007003003c        0x0 obj/td3_memcopy_s.o
+
+.rel.dyn        0x000000007003003c        0x0 dirección de carga 0x00000000700100e4
+ .rel.iplt      0x000000007003003c        0x0 obj/td3_memcopy_s.o
+
+.data           0x000000007003003c        0x8 dirección de carga 0x00000000700100e4
+ *(.data*)
+ .data          0x000000007003003c        0x8 obj/td3_memcopy_s.o
+ .data          0x0000000070030044        0x0 obj/td3_c.o
+                0x00000000700100e4                _SECTION_DATA_LMA = LOADADDR (.data)
+
+.igot.plt       0x0000000070030044        0x0 dirección de carga 0x00000000700100ec
+ .igot.plt      0x0000000070030044        0x0 obj/td3_memcopy_s.o
+
+.bss            0x0000000070030044        0x4 dirección de carga 0x00000000700100ec
+                0x0000000070030044                . = ALIGN (0x4)
+                0x0000000070030044                __bss_start__ = .
+ *(.bss*)
+ .bss           0x0000000070030044        0x4 obj/td3_memcopy_s.o
+ .bss           0x0000000070030048        0x0 obj/td3_c.o
+                0x0000000070030048                __bss_end__ = .
+LOAD obj/td3_memcopy_s.o
+LOAD obj/td3_c.o
+OUTPUT(obj/mi_td3_memcopy.elf elf32-littlearm)
+LOAD linker stubs
+
+.ARM.attributes
+                0x0000000000000000       0x31
+ .ARM.attributes
+                0x0000000000000000       0x12 obj/td3_memcopy_s.o
+ .ARM.attributes
+                0x0000000000000012       0x35 obj/td3_c.o
+
+.comment        0x0000000000000000       0x2b
+ .comment       0x0000000000000000       0x2b obj/td3_c.o
+                                         0x2c (tamaño antes de la relajación)
+
+.note.GNU-stack
+                0x0000000000000000        0x0
+ .note.GNU-stack
+                0x0000000000000000        0x0 obj/td3_c.o
+
+.debug_line     0x0000000000000000      0x121
+ .debug_line    0x0000000000000000       0x70 obj/td3_memcopy_s.o
+ .debug_line    0x0000000000000070       0xb1 obj/td3_c.o
+
+.debug_info     0x0000000000000000      0x102
+ .debug_info    0x0000000000000000       0x22 obj/td3_memcopy_s.o
+ .debug_info    0x0000000000000022       0xe0 obj/td3_c.o
+
+.debug_abbrev   0x0000000000000000       0xb2
+ .debug_abbrev  0x0000000000000000       0x12 obj/td3_memcopy_s.o
+ .debug_abbrev  0x0000000000000012       0xa0 obj/td3_c.o
+
+.debug_aranges  0x0000000000000000       0x48
+ .debug_aranges
+                0x0000000000000000       0x28 obj/td3_memcopy_s.o
+ .debug_aranges
+                0x0000000000000028       0x20 obj/td3_c.o
+
+.debug_str      0x0000000000000000      0x159
+ .debug_str     0x0000000000000000       0x6c obj/td3_memcopy_s.o
+ .debug_str     0x000000000000006c       0xed obj/td3_c.o
+                                        0x147 (tamaño antes de la relajación)
+
+.debug_ranges   0x0000000000000000       0x30
+ .debug_ranges  0x0000000000000000       0x20 obj/td3_memcopy_s.o
+ .debug_ranges  0x0000000000000020       0x10 obj/td3_c.o
+
+.debug_loc      0x0000000000000000      0x1fb
+ .debug_loc     0x0000000000000000      0x1fb obj/td3_c.o
+
+.debug_frame    0x0000000000000000       0x38
+ .debug_frame   0x0000000000000000       0x38 obj/td3_c.o

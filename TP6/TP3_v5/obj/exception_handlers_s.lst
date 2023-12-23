@@ -1,0 +1,130 @@
+ARM GAS  src/exception_handlers.s 			page 1
+
+
+   1              	/**
+   2              	 * Archivo: exception_handlers.s
+   3              	 * Función: manejadores de las excepciones
+   4              	 * Autor: Gabriel Crisafio
+   5              	 **/
+   6              	
+   7              	
+   8              	
+   9              	
+  10              	.global UND_Handler
+  11              	.global SVC_Handler
+  12              	.global PREF_Handler
+  13              	.global ABT_Handler
+  14              	.global IRQ_Handler
+  15              	.global FIQ_Handler
+  16              	
+  17              	.section .text_handlers
+  18              	
+  19              	
+  20              	//NOTA cuando el procesador entra a un Handler de Excepcion se guarda CPSR --> SPSR automaticamente
+  21              	
+  22              	UND_Handler:  
+  23              	    /* Guardar R10 = "INV" */
+  24 0000 00142DE9 	    PUSH { R10, R12 } // dentro del Handler voy a utilizar R10 y R12, pusheo a la pila para guardar
+  25 0004 60C09FE5 	    LDR R12, =_UND_string
+  26 0008 00A09CE5 	    LDR R10, [R12]
+  27 000c 0014BDE8 	    POP { R10, R12 } // restauro valores
+  28              	
+  29 0010 0EF0B0E1 	    MOVS PC, LR
+  30              	
+  31              	
+  32              	SVC_Handler:
+  33              	    /* Guardar R10 = "SVC" */
+  34 0014 00142DE9 	    PUSH { R10, R12 } // dentro del Handler voy a utilizar R10 y R12, pusheo a la pila para guardar
+  35 0018 50C09FE5 	    LDR R12, =_SVC_string
+  36 001c 00A09CE5 	    LDR R10, [R12]
+  37 0020 0014BDE8 	    POP { R10, R12 } // restauro valores
+  38              	
+  39 0024 0EF0B0E1 	    MOVS PC, LR
+  40              	
+  41              	PREF_Handler:
+  42 0028 04E04EE2 	    SUB LR, LR, #4 // LR = LR - 4
+  43              	
+  44 002c 0EF0B0E1 	    MOVS PC, LR
+  45              	
+  46              	
+  47              	ABT_Handler:
+  48 0030 08E04EE2 	    SUB LR, LR, #8 // LR = LR - 8
+  49              	
+  50              	    /* Guardar R10 = "MEM" */
+  51 0034 00142DE9 	    PUSH { R10, R12 } // dentro del Handler voy a utilizar R10 y R12, pusheo a la pila para guardar
+  52 0038 34C09FE5 	    LDR R12, =_ABT_string
+  53 003c 00A09CE5 	    LDR R10, [R12]
+  54 0040 0014BDE8 	    POP { R10, R12 } // restauro valores
+  55              	
+  56 0044 0EF0B0E1 	    MOVS PC, LR
+  57              	
+ARM GAS  src/exception_handlers.s 			page 2
+
+
+  58              	IRQ_Handler:
+  59 0048 04E04EE2 	    SUB LR, LR, #4 // LR = LR - 4
+  60 004c 0F402DE9 	    STMFD R13!, { r0-r3 , r14 }
+  61              	
+  62              	    /* Guardar R10 = "IRQ" */
+  63 0050 20C09FE5 	    LDR R12, =_IRQ_string
+  64 0054 00A09CE5 	    LDR R10, [R12]
+  65              	
+  66              	    /* Handler Code */
+  67 0058 FEFFFFEB 	    BL kernel_handler_irq
+  68              	
+  69 005c 0F80FDE8 	    LDMFD R13!, { r0-r3, pc }^
+  70 0060 0EF0B0E1 	    MOVS PC, LR
+  71              	
+  72              	//IRQ_Handler:
+  73              	//    SUB     lr, lr, #4
+  74              	//    SRSFD    sp!, #0x1f      @ use SRS to save LR_irq and SPSR_irq in one step onto the
+  75              	//                             @ System mode stack
+  76              	//    CPS        #0x1f           @ Use CPS to switch to system mode
+  77              	//  
+  78              	//    PUSH       {r0-r3, r12}    @S tore remaining AAPCS registers on the System mode stack
+  79              	//    AND        r1, sp, #4      @ Ensure stack is 8-byte aligned. Store adjustment and
+  80              	//                               @ LR_sys to stack
+  81              	//
+  82              	//    SUB        sp, sp, r1
+  83              	//
+  84              	//    PUSH       {r1, lr}
+  85              	//
+  86              	//    BL                         @ identify_and_clear_source
+  87              	//
+  88              	//    CPSIE       i              @ Enable IRQ with CPS
+  89              	//
+  90              	//    BL          kernel_handler_irq
+  91              	//
+  92              	//    CPSID       i              @ Disable IRQ with CPS
+  93              	//
+  94              	//    POP         {r1, lr}       @ Restore LR_sys
+  95              	//    ADD         sp, sp, r1     @ Unadjust stack
+  96              	//    POP         {r0-r3, r12}   @ Restore AAPCS registers
+  97              	//    RFEFD       sp!            @ Return using RFE from the System mode stack
+  98              	
+  99              	
+ 100              	FIQ_Handler:
+ 101 0064 04E04EE2 	    SUB LR, LR, #4 // LR = LR - 4
+ 102              	
+ 103 0068 0EF0B0E1 	    MOVS PC, LR
+ 104              	
+ 105              	
+ 106              	/* Seccion de datos inicializados */ 
+ 107              	.section .data
+ 108              	_IRQ_string:
+ 109 0000 49525100 	    .asciz "IRQ"
+ 110              	
+ 111              	.section .data
+ 112              	_UND_string:
+ 113 0004 494E5600 	    .asciz "INV"
+ 114              	
+ARM GAS  src/exception_handlers.s 			page 3
+
+
+ 115              	.section .data
+ 116              	_ABT_string:
+ 117 0008 4D454D00 	    .asciz "MEM"
+ 118              	
+ 119              	.section .data
+ 120              	_SVC_string:
+ 121 000c 53564300 	    .asciz "SVC"...
