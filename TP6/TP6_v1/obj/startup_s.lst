@@ -1,0 +1,164 @@
+ARM GAS  src/startup.s 			page 1
+
+
+   1              	/**
+   2              	 * Archivo: startup.S
+   3              	 * Función: Realiza la inicialización básica del uP
+   4              	 * Autor: Gabriel Crisafio
+   5              	 **/
+   6              	
+   7              	/* Referencias a funciones externas */
+   8              	
+   9              	.extern UND_Handler
+  10              	.extern SVC_Handler
+  11              	.extern PREF_Handler
+  12              	.extern ABT_Handler
+  13              	.extern IRQ_Handler
+  14              	.extern FIQ_Handler
+  15              	
+  16              	.global _start
+  17              	
+  18              	.extern _paginacion
+  19              	.extern __gic_init
+  20              	
+  21              	/* Referencia a variables o simbolos externos */
+  22              	.extern _ISR_VECTORS_BASE
+  23              	.extern __isr_table_start__
+  24              	
+  25              	.extern _reset_vector
+  26              	.extern __bss_start
+  27              	.extern __bss_end
+  28              	
+  29              	
+  30              	.extern __irq_stack_top__
+  31              	.extern __fiq_stack_top__ 
+  32              	.extern __svc_stack_top__
+  33              	.extern __abt_stack_top__
+  34              	.extern __und_stack_top__    
+  35              	.extern __sys_stack_top__ 
+  36              	
+  37              	
+  38              	/* Tamaños en Public RAM */
+  39              	.equ _PUB_RAM_SYS_STACK_SIZE, 256
+  40              	.equ _PUB_RAM_IRQ_STACK_SIZE, 256
+  41              	.equ _PUB_RAM_FIQ_STACK_SIZE, 8
+  42              	.equ _PUB_RAM_SVC_STACK_SIZE, 8
+  43              	.equ _PUB_RAM_ABT_STACK_SIZE, 8
+  44              	.equ _PUB_RAM_UND_STACK_SIZE, 8
+  45              	
+  46              	/* 
+  47              	 Definimos bits del CPSR para los diferentes modos
+  48              	   
+  49              	 CPSR: Current Program Status Register - Ver ARM B1
+  50              	 El SPSR posee la misma estructura que el CPSR, solo que se refiere al
+  51              	 "Saved Program Status Register".
+  52              	 */
+  53              	
+  54              	.equ USR_MODE, 0x10    /* USER       - Encoding segun ARM B1.3.1 (pag. B1-1139): 10000 - Bits 4:0 d
+  55              	.equ FIQ_MODE, 0x11    /* FIQ        - Encoding segun ARM B1.3.1 (pag. B1-1139): 10001 - Bits 4:0 d
+  56              	.equ IRQ_MODE, 0x12    /* IRQ        - Encoding segun ARM B1.3.1 (pag. B1-1139): 10010 - Bits 4:0 d
+  57              	.equ SVC_MODE, 0x13    /* Supervisor - Encoding segun ARM B1.3.1 (pag. B1-1139): 10011 - Bits 4:0 d
+ARM GAS  src/startup.s 			page 2
+
+
+  58              	.equ ABT_MODE, 0x17    /* Abort      - Encoding segun ARM B1.3.1 (pag. B1-1139): 10111 - Bits 4:0 d
+  59              	.equ UND_MODE, 0x1B    /* Undefined  - Encoding segun ARM B1.3.1 (pag. B1-1139): 11011 - Bits 4:0 d
+  60              	.equ SYS_MODE, 0x1F    /* System     - Encoding segun ARM B1.3.1 (pag. B1-1139): 11111 - Bits 4:0 d
+  61              	.equ I_BIT,    0x80    /* Mask bit I - Encoding segun ARM B1.3.3 (pag. B1-1149) - Bit 7 del CPSR */
+  62              	.equ F_BIT,    0x40    /* Mask bit F - Encoding segun ARM B1.3.3 (pag. B1-1149) - Bit 6 del CPSR */
+  63              	
+  64              	/* Modo de funcionamiento: arm */
+  65              	.code 32
+  66              	
+  67              	/* Hasta este momento, no hay nada inicializado */
+  68              	.section .text_start_code
+  69              	_table_start: /* Inicio de table_vector */
+  70 0000 18F09FE5 	    LDR PC, addr__reset_vector
+  71 0004 18F09FE5 	    LDR PC, addr_UND_Handler
+  72 0008 18F09FE5 	    LDR PC, addr_SVC_Handler
+  73 000c 18F09FE5 	    LDR PC, addr_PREF_Handler
+  74 0010 18F09FE5 	    LDR PC, addr_ABT_Handler
+  75 0014 18F09FE5 	    LDR PC, addr_start
+  76 0018 18F09FE5 	    LDR PC, addr_IRQ_Handler
+  77 001c 18F09FE5 	    LDR PC, addr_FIQ_Handler
+  78              	
+  79 0020 00000000 	addr__reset_vector:  .word _reset_vector
+  80 0024 00000000 	addr_UND_Handler  :  .word UND_Handler  
+  81 0028 00000000 	addr_SVC_Handler  :  .word SVC_Handler  
+  82 002c 00000000 	addr_PREF_Handler :  .word PREF_Handler 
+  83 0030 00000000 	addr_ABT_Handler  :  .word ABT_Handler  
+  84 0034 00000000 	addr_start        :  .word _start        
+  85 0038 00000000 	addr_IRQ_Handler  :  .word IRQ_Handler  
+  86 003c 00000000 	addr_FIQ_Handler  :  .word FIQ_Handler  
+  87              	
+  88              	_start:
+  89              	
+  90              	/* Limpiamos la sección BSS - Sugerido por Starterware */
+  91              	_clear_BSS:
+  92 0040 84009FE5 	    LDR R0, =__bss_start__      /* Dirección de inicio de la sección BSS (pública) */
+  93 0044 84109FE5 	    LDR R1, =__bss_end__        /* Dirección final de la sección BSS (pública) */
+  94 0048 0020A0E3 	    MOV R2, #0                  /* Copiamos el valor "0" en R2 */
+  95 004c 010050E1 	    CMP R0,R1
+  96 0050 0200000A 	    BEQ _TABLE_COPY             /* Para el caso particular en el que bss está vacía (__bss_start_
+  97              	_LOOP:
+  98 0054 042080E4 	    STR R2, [R0], #4            /* El contenido de R2 es cargado en "lo apuntado" por R0, luego inc
+  99 0058 010050E1 	    CMP R0, R1                  /* Comparamos R0 y R1, que poseen las direcciones de interés */
+ 100 005c FCFFFFDA 	    BLE _LOOP                   /* Mientras la comparación anterior sea falsa, se vuelve a _LOOP *
+ 101              	
+ 102              	
+ 103              	_TABLE_COPY:
+ 104 0060 0000A0E3 	    MOV R0, #0
+ 105 0064 68109FE5 	    LDR R1, = _table_start
+ 106 0068 68209FE5 	    LDR R2, = _start
+ 107              	
+ 108              	_TABLE_LOOP:
+ 109 006c 043091E4 	    LDR R3, [ R1 ], #4
+ 110 0070 043080E4 	    STR R3, [ R0 ], #4
+ 111              	
+ 112 0074 020051E1 	    CMP R1, R2
+ 113 0078 FBFFFF1A 	    BNE _TABLE_LOOP
+ 114              	
+ARM GAS  src/startup.s 			page 3
+
+
+ 115 007c FEFFFFEB 	    BL _paginacion
+ 116              	
+ 117              	_STACK_INIT:
+ 118              	    /* Inicializamos los stack pointers para los diferentes modos de funcionamiento */
+ 119 0080 D2F021E3 	    MSR cpsr_c,#(IRQ_MODE | I_BIT |F_BIT)
+ 120 0084 50D09FE5 	    LDR SP,=__irq_stack_top__     /* IRQ stack pointer */
+ 121              	
+ 122 0088 D1F021E3 	    MSR cpsr_c,#(FIQ_MODE | I_BIT |F_BIT)
+ 123 008c 4CD09FE5 	    LDR SP,=__fiq_stack_top__     /* FIQ stack pointer */
+ 124              	
+ 125 0090 D3F021E3 	    MSR cpsr_c,#(SVC_MODE | I_BIT |F_BIT)
+ 126 0094 48D09FE5 	    LDR SP,=__svc_stack_top__     /* SVC stack pointer */
+ 127              	
+ 128 0098 D7F021E3 	    MSR cpsr_c,#(ABT_MODE | I_BIT |F_BIT)
+ 129 009c 44D09FE5 	    LDR SP,=__abt_stack_top__     /* ABT stack pointer */
+ 130              	
+ 131 00a0 DBF021E3 	    MSR cpsr_c,#(UND_MODE | I_BIT |F_BIT)
+ 132 00a4 40D09FE5 	    LDR SP,=__und_stack_top__     /* UND stack pointer */
+ 133              	
+ 134 00a8 DFF021E3 	    MSR cpsr_c,#(SYS_MODE | I_BIT |F_BIT)
+ 135 00ac 3CD09FE5 	    LDR SP,=__sys_stack_top__     /* SYS stack pointer */
+ 136              	
+ 137 00b0 FEFFFFEB 	    BL gic_init
+ 138 00b4 FEFFFFEB 	    BL timer_init
+ 139              	
+ 140              	    /* Habilitacion de IRQ en registro CPSR */
+ 141 00b8 00000FE1 	    MRS R0, cpsr
+ 142 00bc 8000C0E3 	    BIC R0, R0, #0x80 
+ 143 00c0 00F021E1 	    MSR cpsr_c, R0 // Habilita IRQ
+ 144              	
+ 145              	prueba_SVC_Handler: //NOTA cuando el procesador entra a un Handler de Excepcion se guarda CPSR --> 
+ 146 00c4 5F0000EF 	    SWI 95
+ 147              	    
+ 148              	idle:
+ 149 00c8 03F020E3 	    WFI
+ 150              	
+ 151 00cc 00000000 	.end
+ 151      00000000 
+ 151      00000000 
+ 151      00000000 
+ 151      00000000 

@@ -1,0 +1,283 @@
+Encabezado ELF:
+  Mágico:   7f 45 4c 46 01 01 01 00 00 00 00 00 00 00 00 00 
+  Clase:                             ELF32
+  Datos:                             complemento a 2, little endian
+  Version:                           1 (current)
+  OS/ABI:                            UNIX - System V
+  Versión ABI:                       0
+  Tipo:                              EXEC (Fichero ejecutable)
+  Máquina:                           ARM
+  Versión:                           0x1
+  Dirección del punto de entrada:               0x70030368
+  Inicio de encabezados de programa:          52 (bytes en el fichero)
+  Inicio de encabezados de sección:          216744 (bytes en el fichero)
+  Opciones:                          0x5000400, Version5 EABI, hard-float ABI
+  Size of this header:               52 (bytes)
+  Size of program headers:           32 (bytes)
+  Number of program headers:         5
+  Size of section headers:           40 (bytes)
+  Number of section headers:         19
+  Section header string table index: 18
+
+Encabezados de Sección:
+  [Nr] Nombre            Tipo            Direc    Desp   Tam    ES Opt En Inf Al
+  [ 0]                   NULL            00000000 000000 000000 00      0   0  0
+  [ 1] .inicio           PROGBITS        70010000 010000 000070 00  AX  0   0  4
+  [ 2] .text             PROGBITS        70030000 020000 000474 00  AX  0   0 16
+  [ 3] .data             PROGBITS        70030474 020474 000018 00  WA  0   0  1
+  [ 4] .bss              NOBITS          7003048c 02048c 000004 00  WA  0   0  1
+  [ 5] .stack            PROGBITS        70020000 030000 002280 00   A  0   0  1
+  [ 6] .ARM.attributes   ARM_ATTRIBUTES  00000000 032280 000039 00      0   0  1
+  [ 7] .comment          PROGBITS        00000000 0322b9 00002b 01  MS  0   0  1
+  [ 8] .debug_line       PROGBITS        00000000 0322e4 000575 00      0   0  1
+  [ 9] .debug_info       PROGBITS        00000000 032859 000807 00      0   0  1
+  [10] .debug_abbrev     PROGBITS        00000000 033060 00039f 00      0   0  1
+  [11] .debug_aranges    PROGBITS        00000000 033400 000148 00      0   0  8
+  [12] .debug_str        PROGBITS        00000000 033548 0003c2 01  MS  0   0  1
+  [13] .debug_ranges     PROGBITS        00000000 033910 000040 00      0   0  8
+  [14] .debug_loc        PROGBITS        00000000 033950 0000f8 00      0   0  1
+  [15] .debug_frame      PROGBITS        00000000 033a48 00008c 00      0   0  4
+  [16] .symtab           SYMTAB          00000000 033ad4 000bd0 10     17 123  4
+  [17] .strtab           STRTAB          00000000 0346a4 00074a 00      0   0  1
+  [18] .shstrtab         STRTAB          00000000 034dee 0000ba 00      0   0  1
+Key to Flags:
+  W (write), A (alloc), X (execute), M (merge), S (strings), I (info),
+  L (link order), O (extra OS processing required), G (group), T (TLS),
+  C (compressed), x (unknown), o (OS specific), E (exclude),
+  y (purecode), p (processor specific)
+
+No hay grupos de sección en este fichero.
+
+Encabezados de Programa:
+  Tipo           Desplaz  DirVirt    DirFísica  TamFich TamMem  Opt Alin
+  LOAD           0x010000 0x70010000 0x70010000 0x00070 0x00070 R E 0x10000
+  LOAD           0x020000 0x70030000 0x70010070 0x00474 0x00474 R E 0x10000
+  LOAD           0x020474 0x70030474 0x700104e4 0x00018 0x0001c RW  0x10000
+  LOAD           0x030000 0x70020000 0x70020000 0x02280 0x02280 R   0x10000
+  GNU_STACK      0x000000 0x00000000 0x00000000 0x00000 0x00000 RWE 0x10
+
+ mapeo de Sección a Segmento:
+  Segmento Secciones...
+   00     .inicio 
+   01     .text 
+   02     .data .bss 
+   03     .stack 
+   04     
+
+No hay sección dinámica en este fichero.
+
+No hay reubicaciones en este fichero.
+
+No hay secciones de desenredo en este fichero.
+
+Symbol table '.symtab' contains 189 entries:
+   Num:    Valor  Tam  Tipo    Unión  Vis      Nombre Ind
+     0: 00000000     0 NOTYPE  LOCAL  DEFAULT  UND 
+     1: 70010000     0 SECTION LOCAL  DEFAULT    1 
+     2: 70030000     0 SECTION LOCAL  DEFAULT    2 
+     3: 70030474     0 SECTION LOCAL  DEFAULT    3 
+     4: 7003048c     0 SECTION LOCAL  DEFAULT    4 
+     5: 70020000     0 SECTION LOCAL  DEFAULT    5 
+     6: 00000000     0 SECTION LOCAL  DEFAULT    6 
+     7: 00000000     0 SECTION LOCAL  DEFAULT    7 
+     8: 00000000     0 SECTION LOCAL  DEFAULT    8 
+     9: 00000000     0 SECTION LOCAL  DEFAULT    9 
+    10: 00000000     0 SECTION LOCAL  DEFAULT   10 
+    11: 00000000     0 SECTION LOCAL  DEFAULT   11 
+    12: 00000000     0 SECTION LOCAL  DEFAULT   12 
+    13: 00000000     0 SECTION LOCAL  DEFAULT   13 
+    14: 00000000     0 SECTION LOCAL  DEFAULT   14 
+    15: 00000000     0 SECTION LOCAL  DEFAULT   15 
+    16: 00000000     0 FILE    LOCAL  DEFAULT  ABS obj/reset_vector_s.o
+    17: 70010000     0 NOTYPE  LOCAL  DEFAULT    1 $a
+    18: 00000000     0 FILE    LOCAL  DEFAULT  ABS obj/td3_memcopy_s.o
+    19: 70010018     0 NOTYPE  LOCAL  DEFAULT    1 _Inicializar_Stack
+    20: 70021000     0 NOTYPE  LOCAL  DEFAULT    5 fin_pila
+    21: 70010018     0 NOTYPE  LOCAL  DEFAULT    1 $a
+    22: 7001001c     0 NOTYPE  LOCAL  DEFAULT    1 _Copia_Seccion_TEXT
+    23: 7001002c     0 NOTYPE  LOCAL  DEFAULT    1 _Copia_Seccion_DATA
+    24: 7001003c     0 NOTYPE  LOCAL  DEFAULT    1 _Bootloader
+    25: 700300c4     0 NOTYPE  LOCAL  DEFAULT    2 _Prueba
+    26: 700300c4     0 NOTYPE  LOCAL  DEFAULT    2 $a
+    27: 70030478     0 NOTYPE  LOCAL  DEFAULT    3 argumento
+    28: 700300d0     0 NOTYPE  LOCAL  DEFAULT    2 _leer_ascii
+    29: 70030474     0 NOTYPE  LOCAL  DEFAULT    3 asciz_string
+    30: 7003048c     0 NOTYPE  LOCAL  DEFAULT    4 factorial
+    31: 700300ec     0 NOTYPE  LOCAL  DEFAULT    2 _prueba_stack
+    32: 7003048c     0 NOTYPE  LOCAL  DEFAULT    4 $d
+    33: 70020000     0 NOTYPE  LOCAL  DEFAULT    5 pila
+    34: 70020000     0 NOTYPE  LOCAL  DEFAULT    5 $d
+    35: 700300f8     0 NOTYPE  LOCAL  DEFAULT    2 $d
+    36: 70010040     0 NOTYPE  LOCAL  DEFAULT    1 $d
+    37: 00000000     0 FILE    LOCAL  DEFAULT  ABS td3.c
+    38: 7001005c     0 NOTYPE  LOCAL  DEFAULT    1 $t
+    39: 00000000     0 FILE    LOCAL  DEFAULT  ABS obj/low_level_cpu_access_
+    40: 70030000     0 NOTYPE  LOCAL  DEFAULT    2 $a
+    41: 7003001c     0 NOTYPE  LOCAL  DEFAULT    2 $d
+    42: 70030020     0 NOTYPE  LOCAL  DEFAULT    2 $a
+    43: 70030048     0 NOTYPE  LOCAL  DEFAULT    2 $d
+    44: 70030050     0 NOTYPE  LOCAL  DEFAULT    2 $a
+    45: 70030058     0 NOTYPE  LOCAL  DEFAULT    2 $d
+    46: 70030060     0 NOTYPE  LOCAL  DEFAULT    2 _BREAKPOINT_DEBUG
+    47: 70030060     0 NOTYPE  LOCAL  DEFAULT    2 $a
+    48: 70030068     0 NOTYPE  LOCAL  DEFAULT    2 $d
+    49: 70030070     0 NOTYPE  LOCAL  DEFAULT    2 $a
+    50: 7003007c     0 NOTYPE  LOCAL  DEFAULT    2 $d
+    51: 70030080     0 NOTYPE  LOCAL  DEFAULT    2 $a
+    52: 70030090     0 NOTYPE  LOCAL  DEFAULT    2 $a
+    53: 700300c0     0 NOTYPE  LOCAL  DEFAULT    2 $d
+    54: 00000000     0 FILE    LOCAL  DEFAULT  ABS obj/paginacion_s.o
+    55: 70030104     0 NOTYPE  LOCAL  DEFAULT    2 $a
+    56: 70030110     0 NOTYPE  LOCAL  DEFAULT    2 _borrado
+    57: 7003011c     0 NOTYPE  LOCAL  DEFAULT    2 Paginacion_ISR_Table
+    58: 7003023c     0 NOTYPE  LOCAL  DEFAULT    2 Funcion_Paginacion
+    59: 70030130     0 NOTYPE  LOCAL  DEFAULT    2 Paginacion_Timer
+    60: 70030270     0 NOTYPE  LOCAL  DEFAULT    2 Incrementar_Puntero_L2
+    61: 70030144     0 NOTYPE  LOCAL  DEFAULT    2 Paginacion_GIC_CPU_Interf
+    62: 70030158     0 NOTYPE  LOCAL  DEFAULT    2 Paginacion_GIC_Distributo
+    63: 7003016c     0 NOTYPE  LOCAL  DEFAULT    2 Paginacion_Stack
+    64: 70030194     0 NOTYPE  LOCAL  DEFAULT    2 Paginacion_L1
+    65: 700301c8     0 NOTYPE  LOCAL  DEFAULT    2 _table_level_1
+    66: 700301f4     0 NOTYPE  LOCAL  DEFAULT    2 Paginacion_L2
+    67: 70030208     0 NOTYPE  LOCAL  DEFAULT    2 Paginacion_RAM
+    68: 70030244     0 NOTYPE  LOCAL  DEFAULT    2 Separacion_Direccion_Virt
+    69: 70030250     0 NOTYPE  LOCAL  DEFAULT    2 Tabla_Nivel_1
+    70: 7003025c     0 NOTYPE  LOCAL  DEFAULT    2 Tabla_Nivel_2
+    71: 7003027c     0 NOTYPE  LOCAL  DEFAULT    2 $d
+    72: 00000000     0 FILE    LOCAL  DEFAULT  ABS obj/exception_handlers_s.
+    73: 700302a4     0 NOTYPE  LOCAL  DEFAULT    2 $a
+    74: 70030480     0 NOTYPE  LOCAL  DEFAULT    3 _UND_string
+    75: 70030488     0 NOTYPE  LOCAL  DEFAULT    3 _SVC_string
+    76: 70030484     0 NOTYPE  LOCAL  DEFAULT    3 _ABT_string
+    77: 7003047c     0 NOTYPE  LOCAL  DEFAULT    3 _IRQ_string
+    78: 70030318     0 NOTYPE  LOCAL  DEFAULT    2 $d
+    79: 00000000     0 FILE    LOCAL  DEFAULT  ABS obj/startup_s.o
+    80: 00000100     0 NOTYPE  LOCAL  DEFAULT  ABS _PUB_RAM_SYS_STACK_SIZE
+    81: 00000100     0 NOTYPE  LOCAL  DEFAULT  ABS _PUB_RAM_IRQ_STACK_SIZE
+    82: 00000008     0 NOTYPE  LOCAL  DEFAULT  ABS _PUB_RAM_FIQ_STACK_SIZE
+    83: 00000008     0 NOTYPE  LOCAL  DEFAULT  ABS _PUB_RAM_SVC_STACK_SIZE
+    84: 00000008     0 NOTYPE  LOCAL  DEFAULT  ABS _PUB_RAM_ABT_STACK_SIZE
+    85: 00000008     0 NOTYPE  LOCAL  DEFAULT  ABS _PUB_RAM_UND_STACK_SIZE
+    86: 00000010     0 NOTYPE  LOCAL  DEFAULT  ABS USR_MODE
+    87: 00000011     0 NOTYPE  LOCAL  DEFAULT  ABS FIQ_MODE
+    88: 00000012     0 NOTYPE  LOCAL  DEFAULT  ABS IRQ_MODE
+    89: 00000013     0 NOTYPE  LOCAL  DEFAULT  ABS SVC_MODE
+    90: 00000017     0 NOTYPE  LOCAL  DEFAULT  ABS ABT_MODE
+    91: 0000001b     0 NOTYPE  LOCAL  DEFAULT  ABS UND_MODE
+    92: 0000001f     0 NOTYPE  LOCAL  DEFAULT  ABS SYS_MODE
+    93: 00000080     0 NOTYPE  LOCAL  DEFAULT  ABS I_BIT
+    94: 00000040     0 NOTYPE  LOCAL  DEFAULT  ABS F_BIT
+    95: 70030328     0 NOTYPE  LOCAL  DEFAULT    2 _table_start
+    96: 70030348     0 NOTYPE  LOCAL  DEFAULT    2 addr__reset_vector
+    97: 70030328     0 NOTYPE  LOCAL  DEFAULT    2 $a
+    98: 7003034c     0 NOTYPE  LOCAL  DEFAULT    2 addr_UND_Handler
+    99: 70030350     0 NOTYPE  LOCAL  DEFAULT    2 addr_SVC_Handler
+   100: 70030354     0 NOTYPE  LOCAL  DEFAULT    2 addr_PREF_Handler
+   101: 70030358     0 NOTYPE  LOCAL  DEFAULT    2 addr_ABT_Handler
+   102: 7003035c     0 NOTYPE  LOCAL  DEFAULT    2 addr_start
+   103: 70030360     0 NOTYPE  LOCAL  DEFAULT    2 addr_IRQ_Handler
+   104: 70030364     0 NOTYPE  LOCAL  DEFAULT    2 addr_FIQ_Handler
+   105: 70030348     0 NOTYPE  LOCAL  DEFAULT    2 $d
+   106: 70030368     0 NOTYPE  LOCAL  DEFAULT    2 _clear_BSS
+   107: 70030368     0 NOTYPE  LOCAL  DEFAULT    2 $a
+   108: 70030388     0 NOTYPE  LOCAL  DEFAULT    2 _TABLE_COPY
+   109: 7003037c     0 NOTYPE  LOCAL  DEFAULT    2 _LOOP
+   110: 70030394     0 NOTYPE  LOCAL  DEFAULT    2 _TABLE_LOOP
+   111: 700303a8     0 NOTYPE  LOCAL  DEFAULT    2 _STACK_INIT
+   112: 700303ec     0 NOTYPE  LOCAL  DEFAULT    2 prueba_SVC_Handler
+   113: 700303f0     0 NOTYPE  LOCAL  DEFAULT    2 idle
+   114: 700303f4     0 NOTYPE  LOCAL  DEFAULT    2 $d
+   115: 00000000     0 FILE    LOCAL  DEFAULT  ABS exception_handlers.c
+   116: 7003041c     0 NOTYPE  LOCAL  DEFAULT    2 $t
+   117: 00000000     0 FILE    LOCAL  DEFAULT  ABS gic.c
+   118: 70030428     0 NOTYPE  LOCAL  DEFAULT    2 $t
+   119: 00000000     0 FILE    LOCAL  DEFAULT  ABS timer.c
+   120: 7003044c     0 NOTYPE  LOCAL  DEFAULT    2 $t
+   121: 70030474     0 NOTYPE  LOCAL  DEFAULT    3 $d
+   122: 7003047c     0 NOTYPE  LOCAL  DEFAULT    3 $d
+   123: 70030098     0 NOTYPE  GLOBAL DEFAULT    2 _WRITE_16
+   124: 00000080     0 NOTYPE  GLOBAL DEFAULT  ABS FIQ_STACK_SIZE
+   125: 70030090     0 NOTYPE  GLOBAL DEFAULT    2 _WRITE_8
+   126: 70030474     0 NOTYPE  GLOBAL DEFAULT    3 __data_start__
+   127: 00000474     0 NOTYPE  GLOBAL DEFAULT  ABS _PUBLIC_SIZE_TEXT
+   128: 70050000     0 NOTYPE  GLOBAL DEFAULT  ABS _PUBLIC_PAGES_INIT
+   129: 70022280     0 NOTYPE  GLOBAL DEFAULT    5 __sys_stack_top__
+   130: 700302f4     0 NOTYPE  GLOBAL DEFAULT    2 IRQ_Handler
+   131: 70030474     0 NOTYPE  GLOBAL DEFAULT    2 __text_end__
+   132: 70030104     0 NOTYPE  GLOBAL DEFAULT    2 _paginacion
+   133: 70030000     0 NOTYPE  GLOBAL DEFAULT    2 __text_start__
+   134: 70021080     0 NOTYPE  GLOBAL DEFAULT    5 __irq_stack_top__
+   135: 700104e4     0 NOTYPE  GLOBAL DEFAULT  ABS _PUBLIC_LMA_SECTION_DATA
+   136: 7001005d    20 FUNC    GLOBAL DEFAULT    1 td3_memcopy
+   137: 00008000     0 NOTYPE  GLOBAL DEFAULT  ABS _long_tables
+   138: 700302cc     0 NOTYPE  GLOBAL DEFAULT    2 PREF_Handler
+   139: 00000080     0 NOTYPE  GLOBAL DEFAULT  ABS IRQ_STACK_SIZE
+   140: 7003048c     0 NOTYPE  GLOBAL DEFAULT    4 __bss_start__
+   141: 700300a0     0 NOTYPE  GLOBAL DEFAULT    2 _WRITE_32
+   142: 70030020     0 NOTYPE  GLOBAL DEFAULT    2 _irq_disable
+   143: 70010070     0 NOTYPE  GLOBAL DEFAULT    1 __ROM_end__
+   144: 70021280     0 NOTYPE  GLOBAL DEFAULT    5 __und_stack_top__
+   145: 70030000     0 NOTYPE  GLOBAL DEFAULT    2 _irq_enable
+   146: 70030000     0 NOTYPE  GLOBAL DEFAULT  ABS _PUBLIC_RAM_INIT
+   147: 00000000     0 NOTYPE  GLOBAL DEFAULT  ABS __isr_table_start__
+   148: 700300a8     0 NOTYPE  GLOBAL DEFAULT    2 _READ_8
+   149: 00000070     0 NOTYPE  GLOBAL DEFAULT  ABS _PUBLIC_SIZE_INICIO
+   150: 70054000     0 NOTYPE  GLOBAL DEFAULT  ABS L2_first_page
+   151: 700302d4     0 NOTYPE  GLOBAL DEFAULT    2 ABT_Handler
+   152: 00000080     0 NOTYPE  GLOBAL DEFAULT  ABS ABT_STACK_SIZE
+   153: 7003044d    38 FUNC    GLOBAL DEFAULT    2 timer_init
+   154: 70021100     0 NOTYPE  GLOBAL DEFAULT    5 __fiq_stack_top__
+   155: 70030050     0 NOTYPE  GLOBAL DEFAULT    2 _HALT_CPU
+   156: 7003048c     0 NOTYPE  GLOBAL DEFAULT    3 __data_end__
+   157: 70030429    36 FUNC    GLOBAL DEFAULT    2 gic_init
+   158: 70030070     0 NOTYPE  GLOBAL DEFAULT    2 _READ_CPSR_REGS
+   159: 70030490     0 NOTYPE  GLOBAL DEFAULT    4 __bss_end__
+   160: 70030368     0 NOTYPE  GLOBAL DEFAULT    2 _start
+   161: 70010018     0 NOTYPE  GLOBAL DEFAULT    1 _Copia_ROM_a_RAM
+   162: 00000400     0 NOTYPE  GLOBAL DEFAULT  ABS Size_L2
+   163: 7003003c     0 NOTYPE  GLOBAL DEFAULT    2 _LOAD_ISR_Vectors_Base
+   164: 700104e4     0 NOTYPE  GLOBAL DEFAULT  ABS _SECTION_DATA_LMA
+   165: 00000000     0 NOTYPE  GLOBAL DEFAULT  ABS _ISR_TABLE_START
+   166: 70021180     0 NOTYPE  GLOBAL DEFAULT    5 __svc_stack_top__
+   167: 70010070     0 NOTYPE  GLOBAL DEFAULT  ABS _SECTION_TEXT_LMA
+   168: 700302b8     0 NOTYPE  GLOBAL DEFAULT    2 SVC_Handler
+   169: 70021200     0 NOTYPE  GLOBAL DEFAULT    5 __abt_stack_top__
+   170: 700302a4     0 NOTYPE  GLOBAL DEFAULT    2 UND_Handler
+   171: 70030474     0 NOTYPE  GLOBAL DEFAULT  ABS _PUBLIC_VMA_SECTION_DATA
+   172: 00001000     0 NOTYPE  GLOBAL DEFAULT  ABS C_STACK_SIZE
+   173: 00004000     0 NOTYPE  GLOBAL DEFAULT  ABS Size_L1
+   174: 700300b8     0 NOTYPE  GLOBAL DEFAULT    2 _READ_32
+   175: 70030310     0 NOTYPE  GLOBAL DEFAULT    2 FIQ_Handler
+   176: 7003041d    10 FUNC    GLOBAL DEFAULT    2 kernel_handler_irq
+   177: 70010000     0 NOTYPE  GLOBAL DEFAULT  ABS _PUBLIC_ROM_INIT
+   178: 00000018     0 NOTYPE  GLOBAL DEFAULT  ABS _PUBLIC_SIZE_DATA
+   179: 00000080     0 NOTYPE  GLOBAL DEFAULT  ABS SVC_STACK_SIZE
+   180: 00000080     0 NOTYPE  GLOBAL DEFAULT  ABS UND_STACK_SIZE
+   181: 700300b0     0 NOTYPE  GLOBAL DEFAULT    2 _READ_16
+   182: 70050000     0 NOTYPE  GLOBAL DEFAULT  ABS _tabla_nivel_1
+   183: 70010000     0 NOTYPE  GLOBAL DEFAULT    1 _reset_vector
+   184: 70022280     0 NOTYPE  GLOBAL DEFAULT    5 __stack_end__
+   185: 70020000     0 NOTYPE  GLOBAL DEFAULT    5 __stack_start__
+   186: 70030080     0 NOTYPE  GLOBAL DEFAULT    2 _EOI
+   187: 70010000     0 NOTYPE  GLOBAL DEFAULT    1 __ROM_start__
+   188: 70020000     0 NOTYPE  GLOBAL DEFAULT  ABS _PUBLIC_STACK_INIT
+
+No se encontró información de versión en este fichero.
+Attribute Section: aeabi
+Atributos de Fichero
+  Tag_CPU_name: "Cortex-A8"
+  Tag_CPU_arch: v7
+  Tag_CPU_arch_profile: Aplicación
+  Tag_ARM_ISA_use: Yes
+  Tag_THUMB_ISA_use: Thumb-2
+  Tag_FP_arch: VFPv3
+  Tag_Advanced_SIMD_arch: NEONv1
+  Tag_ABI_PCS_wchar_t: 4
+  Tag_ABI_FP_denormal: Needed
+  Tag_ABI_FP_exceptions: Needed
+  Tag_ABI_FP_number_model: IEEE 754
+  Tag_ABI_align_needed: 8 bytes
+  Tag_ABI_enum_size: int
+  Tag_ABI_VFP_args: VFP registers
+  Tag_CPU_unaligned_access: v6
+  Tag_Virtualization_use: TrustZone
